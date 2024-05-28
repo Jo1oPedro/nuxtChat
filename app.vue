@@ -2,14 +2,14 @@
   <div class="flex w-full h-full absolute">
     <LayoutSidebar v-if="sidebarOpen"></LayoutSidebar>
 
-    <div class="w-full bg-green-400 flex flex-col h-full relative">
+    <div class="w-full flex flex-col h-full relative">
       <LayoutHead
         :eyeIcon="eyeIcon"
         @toggle-sidebar="toggleSidebar()"
         @toggle-chat="toggleChat()"
       ></LayoutHead>
 
-      <div class="bg-orange-500 grow p-2 flex">
+      <div class="grow p-2 flex">
         <NuxtLayout>
           <NuxtPage></NuxtPage>
         </NuxtLayout>
