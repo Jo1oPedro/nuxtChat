@@ -10,7 +10,7 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@nuxtjs/color-mode",
     "nuxt-icon",
-    "@nuxt/image"
+    "@nuxt/image",
   ],
   shadcn: {
     /**
