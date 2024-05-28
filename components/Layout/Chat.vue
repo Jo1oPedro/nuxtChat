@@ -46,7 +46,10 @@ defineProps({
   },
 });
 
-const emit = defineEmits("toggleChat");
+const emit = defineEmits(["toggleChat"]);
+function toggleChat() {
+  emit("toggleChat");
+}
 
 const userMessage = ref("");
 const { $sendMessageToServer } = useNuxtApp();
@@ -57,12 +60,6 @@ function sendMessage() {
   };
   userMessage.value = "";
   $sendMessageToServer(message);
-}
-
-//const chatOpen = ref(false);
-function toggleChat() {
-  //chatOpen.value = !chatOpen.value;
-  emit("toggleChat");
 }
 </script>
 
