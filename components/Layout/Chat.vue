@@ -10,7 +10,7 @@
       class="absolute bottom-0 right-0 bg-red-500 w-[200px] h-[400px] md:w-[400px] md:h-[600px] flex flex-col"
       v-if="chatOpen"
     >
-      <div class="bg-green-500 flex justify-between px-1 items-center">
+      <div class="flex justify-between px-1 items-center">
         <UsersChatProfile name="Vitoria" image="img/vitoria.jpg" />
         <Icon
           name="material-symbols:close"
