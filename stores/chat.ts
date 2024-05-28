@@ -1,13 +1,21 @@
 import { defineStore } from "pinia";
 
+interface Message {
+  content: string;
+  messageOwner: boolean;
+}
+
 export const useChatStore = defineStore({
   id: "myChatStoreStore",
   state: () => ({
-    messages: [],
+    messages: [] as Message[],
   }),
   actions: {
-    setMessage(message: string) {
-      this.messages.push(message);
+    setMessage(content: string, messageOwner: boolean) {
+      this.messages.push({
+        content,
+        messageOwner,
+      });
     },
   },
 });
