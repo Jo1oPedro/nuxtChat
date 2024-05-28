@@ -1,5 +1,5 @@
 <template>
-  <div class="w-[100px] h-full bg-red-500 flex flex-col justify-between p-2">
+  <div class="w-[100px] h-full border-r-2 flex flex-col justify-between p-2">
     <div class="flex gap-2 flex-col">
       <NuxtLink to="/">
         <Button>Home</Button>
