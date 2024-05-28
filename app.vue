@@ -6,6 +6,7 @@
       <LayoutHead
         :eyeIcon="eyeIcon"
         @toggle-sidebar="toggleSidebar()"
+        @toggle-chat="toggleChat()"
       ></LayoutHead>
 
       <div class="bg-orange-500 grow p-2 flex">
@@ -14,7 +15,7 @@
         </NuxtLayout>
       </div>
 
-      <LayoutChat></LayoutChat>
+      <LayoutChat :chatOpen="chatOpen" @toggle-chat="toggleChat()"></LayoutChat>
     </div>
   </div>
 </template>
@@ -29,6 +30,11 @@ function toggleSidebar() {
     return;
   }
   eyeIcon.value = "mdi:show";
+}
+
+const chatOpen = ref(false);
+function toggleChat() {
+  chatOpen.value = !chatOpen.value;
 }
 </script>
 

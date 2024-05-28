@@ -20,14 +20,7 @@
       </div>
       <div class="overflow-y-scroll">
         <div class="w-full grow bg-orange-200">
-          <!--<div
-            :class="getMessageClass(message.messageOwner)"
-            v-for="message in userMessages"
-            :key="message.content"
-          >
-            {{ message.content }}
-          </div>-->
-          <div v-for="item in 100" :key="item">oi</div>
+          <LayoutChatMessageItem></LayoutChatMessageItem>
         </div>
       </div>
       <div class="bg-red-500 p-1">
@@ -45,10 +38,16 @@
 
 <script lang="ts" setup>
 import { Input } from "@/components/ui/input";
-import { useChatStore } from "@/stores/chat";
-const chatStore = useChatStore();
 
-const userMessages = computed(() => chatStore.messages);
+defineProps({
+  chatOpen: {
+    type: Boolean,
+    required: true,
+  },
+});
+
+const emit = defineEmits("toggleChat");
+
 const userMessage = ref("");
 const { $sendMessageToServer } = useNuxtApp();
 function sendMessage() {
@@ -60,15 +59,10 @@ function sendMessage() {
   $sendMessageToServer(message);
 }
 
-const chatOpen = ref(false);
+//const chatOpen = ref(false);
 function toggleChat() {
-  chatOpen.value = !chatOpen.value;
-}
-function getMessageClass(messageOwner: boolean) {
-  if (messageOwner) {
-    return "bg-red-500";
-  }
-  return "bg-blue-500";
+  //chatOpen.value = !chatOpen.value;
+  emit("toggleChat");
 }
 </script>
 
