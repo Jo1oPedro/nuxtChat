@@ -70,7 +70,6 @@
 <script setup lang="ts">
 import { Input } from "@/components/ui/input";
 import { useChatStore } from "./stores/chat";
-import { useAuthStore } from "./stores/auth";
 const chatStore = useChatStore();
 
 const userMessages = computed(() => chatStore.messages);
