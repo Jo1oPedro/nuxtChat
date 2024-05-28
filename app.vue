@@ -45,11 +45,11 @@
           </div>
           <div class="w-full grow bg-orange-200">
             <div
-              class="bg-purple-200"
+              :class="getMessageClass(message.messageOwner)"
               v-for="message in userMessages"
-              :key="message"
+              :key="message.content"
             >
-              {{ message }}
+              {{ message.content }}
             </div>
           </div>
           <div class="bg-red-500 p-1">
@@ -70,9 +70,10 @@
 <script setup lang="ts">
 import { Input } from "@/components/ui/input";
 import { useChatStore } from "./stores/chat";
-const store = useChatStore();
+import { useAuthStore } from "./stores/auth";
+const chatStore = useChatStore();
 
-const userMessages = computed(() => store.messages);
+const userMessages = computed(() => chatStore.messages);
 const userMessage = ref("");
 const { $sendMessageToServer } = useNuxtApp();
 function sendMessage() {
@@ -87,6 +88,12 @@ function sendMessage() {
 const chatOpen = ref(false);
 function toggleChat() {
   chatOpen.value = !chatOpen.value;
+}
+function getMessageClass(messageOwner: boolean) {
+  if (messageOwner) {
+    return "bg-red-500";
+  }
+  return "bg-blue-500";
 }
 
 const sidebarOpen = ref(true);
