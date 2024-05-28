@@ -9,7 +9,7 @@
         @toggle-chat="toggleChat()"
       ></LayoutHead>
 
-      <div class="grow p-2 flex">
+      <div class="grow p-2 flex px-6">
         <NuxtLayout>
           <NuxtPage></NuxtPage>
         </NuxtLayout>
