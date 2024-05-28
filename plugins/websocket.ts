@@ -1,9 +1,12 @@
 import { useChatStore } from "@/stores/chat";
+import { useAuthStore } from "~/stores/auth";
 
 export default defineNuxtPlugin((nuxtApp) => {
   if (process.server) return;
 
-  const socket = new WebSocket("ws://localhost:8080");
+  const authStore = useAuthStore();
+  const id = useAuthStore().getId();
+  const socket = new WebSocket(`ws://localhost:8080?userId=${id}`);
 
   socket.onopen = () => {
     console.log("conectado ao servidor");
@@ -13,9 +16,8 @@ export default defineNuxtPlugin((nuxtApp) => {
     const data = JSON.parse(event.data);
     console.log(event.data);
     if (data.type === "new_user" || data.type === "new_message") {
-      //nuxtApp.$emit("updateUserCount", data.count);
       const store = useChatStore();
-      store.setMessage(data.message);
+      store.setMessage(data.message, +data.user_id === useAuthStore().getId());
     }
   };
 
