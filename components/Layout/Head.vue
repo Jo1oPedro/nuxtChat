@@ -1,9 +1,9 @@
 <template>
-  <div class="flex justify-end items-center gap-3 px-2">
-    <Button @click="toggleSidebar()" class="bg-transparent">
+  <div class="flex justify-end items-center gap-3">
+    <Button @click="toggleSidebar()" class="bg-transparent hover:bg-gray-400">
       <Icon :name="eyeIcon" size="20" :color="iconColor"></Icon>
     </Button>
-    <Button @click="toggleChat()" class="bg-transparent">
+    <Button @click="toggleChat()" class="bg-transparent hover:bg-gray-400">
       <Icon name="bi:chat-fill" size="20" :color="iconColor"></Icon>
     </Button>
     <ColorModeToogle></ColorModeToogle>
