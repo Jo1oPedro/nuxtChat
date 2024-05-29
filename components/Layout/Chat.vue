@@ -14,7 +14,7 @@
         <UsersChatProfile name="Vitoria" image="img/vitoria.jpg" />
         <Icon
           name="material-symbols:close"
-          size="30"
+          size="20"
           @click="toggleChat"
           color="black"
         ></Icon>
@@ -34,9 +34,8 @@
         </div>
       </div>
       <div class="p-1">
-        <Input
-          class="w-full"
-          type="text"
+        <Textarea
+          class="w-full break-words resize-none focus:outline-none"
           placeholder="Digite sua mensagem"
           v-model="userMessage"
           @keydown.enter="sendMessage"
