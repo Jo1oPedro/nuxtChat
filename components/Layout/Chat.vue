@@ -35,7 +35,7 @@
           class="w-full resize-none focus:outline-none"
           placeholder="Digite sua mensagem"
           v-model="userMessage"
-          @keydown.enter="sendMessage"
+          @keydown.enter.prevent="sendMessage"
         />
       </div>
     </div>
@@ -72,13 +72,14 @@ function getMessageClass(messageOwner: boolean) {
 const userMessage = ref("");
 const { $sendMessageToServer } = useNuxtApp();
 function sendMessage() {
-  console.log("dale " + userMessage.value);
-  const message = {
-    type: "new_message",
-    message: userMessage.value,
-  };
-  userMessage.value = "";
-  $sendMessageToServer(message);
+  if (userMessage.value.trim() !== "") {
+    const message = {
+      type: "new_message",
+      message: userMessage.value,
+    };
+    userMessage.value = "";
+    $sendMessageToServer(message);
+  }
 }
 </script>
 
