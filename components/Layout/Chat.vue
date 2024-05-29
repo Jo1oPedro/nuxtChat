@@ -26,7 +26,6 @@
             v-for="message in userMessages"
             :key="message.content"
           >
-            <!--{{ message.content }}-->
             <LayoutChatMessageItem
               :content="message.content"
               :messageOwner="message.messageOwner"
