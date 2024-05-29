@@ -1,6 +1,9 @@
 <template>
-  <div>
-    <div :class="getMessageClass(messageOwner)" class="text-base break-word">
+  <div class="px-2 flex break-words" :class="{ 'justify-end': messageOwner }">
+    <div
+      :class="[getMessageClass(messageOwner)]"
+      class="text-base break-all inline-flex items-center p-2 rounded-l-lg rounded-r-lg"
+    >
       {{ content }}
     </div>
   </div>
