@@ -1,6 +1,8 @@
 <template>
   <div class="flex w-full h-full absolute">
-    <LayoutSidebar v-if="sidebarOpen"></LayoutSidebar>
+    <transition name="sidebar">
+      <LayoutSidebar v-if="sidebarOpen"></LayoutSidebar>
+    </transition>
 
     <div class="w-full flex flex-col h-full relative">
       <LayoutHead
@@ -47,5 +49,15 @@ function toggleChat() {
 .page-leave-to {
   opacity: 0;
   filter: blur(1rem);
+}
+
+.sidebar-enter-active,
+.sidebar-leave-active {
+  transition: all 0.4s;
+}
+.sidebar-enter-from,
+.sidebar-leave-to {
+  transform: translateX(-100%);
+  opacity: 0;
 }
 </style>
