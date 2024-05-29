@@ -1,7 +1,10 @@
 <template>
   <div class="flex w-full h-full absolute">
     <transition name="sidebar">
-      <LayoutSidebar v-if="sidebarOpen"></LayoutSidebar>
+      <LayoutSidebar
+        v-if="sidebarOpen"
+        @toggle-sidebar="toggleSidebar()"
+      ></LayoutSidebar>
     </transition>
 
     <div class="w-full flex flex-col h-full relative">
@@ -11,7 +14,7 @@
         @toggle-chat="toggleChat()"
       ></LayoutHead>
 
-      <div class="grow p-2 flex px-6">
+      <div class="grow flex">
         <NuxtLayout>
           <NuxtPage></NuxtPage>
         </NuxtLayout>
@@ -43,7 +46,7 @@ function toggleChat() {
 <style>
 .page-enter-active,
 .page-leave-active {
-  transition: all 1.4s;
+  transition: all 0.3s;
 }
 .page-enter-from,
 .page-leave-to {
