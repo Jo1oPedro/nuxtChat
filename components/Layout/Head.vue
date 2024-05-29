@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-end items-center gap-3">
+  <div class="flex justify-end items-center gap-3 border-b-2">
     <Button @click="toggleSidebar()" class="bg-transparent hover:bg-gray-400">
       <Icon :name="eyeIcon" size="20" :color="iconColor"></Icon>
     </Button>
