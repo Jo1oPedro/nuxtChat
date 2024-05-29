@@ -21,12 +21,9 @@
       </div>
       <div class="overflow-y-scroll h-full flex">
         <div class="w-full grow flex flex-col justify-end">
-          <div
-            :class="getMessageClass(message.messageOwner)"
-            v-for="message in userMessages"
-            :key="message.content"
-          >
+          <div v-for="message in userMessages" :key="message.content">
             <LayoutChatMessageItem
+              class="break-words mb-2"
               :content="message.content"
               :messageOwner="message.messageOwner"
             ></LayoutChatMessageItem>
@@ -35,7 +32,7 @@
       </div>
       <div class="p-1">
         <Textarea
-          class="w-full break-words resize-none focus:outline-none"
+          class="w-full resize-none focus:outline-none"
           placeholder="Digite sua mensagem"
           v-model="userMessage"
           @keydown.enter="sendMessage"
@@ -46,6 +43,7 @@
 </template>
 
 <script lang="ts" setup>
+import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { useChatStore } from "@/stores/chat";
 
@@ -74,6 +72,7 @@ function getMessageClass(messageOwner: boolean) {
 const userMessage = ref("");
 const { $sendMessageToServer } = useNuxtApp();
 function sendMessage() {
+  console.log("dale " + userMessage.value);
   const message = {
     type: "new_message",
     message: userMessage.value,
