@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div :class="getMessageClass(messageOwner)" class="text-base">
+    <div :class="getMessageClass(messageOwner)" class="text-base break-word">
       {{ content }}
     </div>
   </div>
