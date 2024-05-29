@@ -23,7 +23,7 @@
         </Button>
       </NuxtLink>
     </div>
-    <div class="flex flex-col w-full items-center p-3">
+    <div class="flex flex-col w-full p-3">
       <p class="mb-3">Pets desaparecidos</p>
       <div class="flex w-full flex-col sm:flex-row gap-3 justify-between">
         <div
