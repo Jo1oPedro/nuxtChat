@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-orange-200 flex gap-2 items-center">
+  <div class="flex gap-2 items-center">
     <NuxtImg
       :src="image"
       class="h-[30px] w-[30px] md:h-[40px] md:w-[40px] rounded-full"
