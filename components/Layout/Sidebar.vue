@@ -4,7 +4,7 @@
       class="flex items-center gap-2 hover:scale-[101%] transition cursor-pointer p-3"
     >
       <LayoutLogo />
-      <p class="font-bold text-sm md:text-base">AuMocar Fórum</p>
+      <p class="font-bold text-sm md:text-base">Missing Pets</p>
     </header>
     <div class="flex gap-2 flex-col px-2">
       <NuxtLink
