@@ -6,7 +6,7 @@ interface Message {
 }
 
 export const useChatStore = defineStore({
-  id: "myChatStoreStore",
+  id: "myChatStore",
   state: () => ({
     messages: [] as Message[],
   }),
