@@ -1,4 +1,8 @@
 <script setup lang="ts">
+definePageMeta({
+  layout: "auth",
+});
+
 import { h } from "vue";
 import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
@@ -15,42 +19,65 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { toast } from "@/components/ui/toast";
+import { useToast } from "@/components/ui/toast/use-toast";
+const { $generateMessages } = useNuxtApp();
+
+const { toast } = useToast();
 
 const formSchema = toTypedSchema(
   z.object({
-    username: z.string().min(2).max(50),
+    nome: z
+      .string()
+      .min(2, { message: $generateMessages("O nome").min(2) })
+      .max(50, { message: $generateMessages("O nome").max(50) }),
+    senha: z.string().min(2, { message: $generateMessages("A senha").min(2) }),
   })
 );
 
-const { handleSubmit } = useForm({
+const { handleSubmit, resetForm } = useForm({
   validationSchema: formSchema,
 });
 
 const onSubmit = handleSubmit((values) => {
-  toast({
-    title: "You submitted the following values:",
-    description: h(
-      "pre",
-      { class: "mt-2 w-[340px] rounded-md bg-slate-950 p-4" },
-      h("code", { class: "text-white" }, JSON.stringify(values, null, 2))
-    ),
-  });
+  navigateTo("/");
 });
 </script>
 
 <template>
-  <form class="w-2/3 space-y-6" @submit="onSubmit">
-    <FormField v-slot="{ componentField }" name="username">
-      <FormItem v-auto-animate>
-        <FormLabel>Username</FormLabel>
-        <FormControl>
-          <Input type="text" placeholder="shadcn" v-bind="componentField" />
-        </FormControl>
-        <FormDescription> This is your public display name. </FormDescription>
-        <FormMessage />
-      </FormItem>
-    </FormField>
-    <Button type="submit"> Submit </Button>
-  </form>
+  <div class="absolute inset-0 flex h-full items-center justify-center">
+    <div
+      class="flex flex-col gap-4 md:w-[400px] bg-neutral-300 p-8 items-center justify-center"
+    >
+      <span class="font-bold">Registrar-se</span>
+      <form class="flex flex-col gap-4 w-full" @submit.prevent="onSubmit">
+        <FormField v-slot="{ componentField }" name="nome">
+          <FormItem v-auto-animate>
+            <FormLabel>Username</FormLabel>
+            <FormControl>
+              <Input type="text" v-bind="componentField" />
+            </FormControl>
+            <FormDescription>
+              This is your public display name.
+            </FormDescription>
+            <FormMessage />
+          </FormItem>
+        </FormField>
+        <FormField v-slot="{ componentField }" name="senha">
+          <FormItem v-auto-animate>
+            <FormLabel>Senha</FormLabel>
+            <FormControl>
+              <Input type="text" placeholder="" v-bind="componentField" />
+            </FormControl>
+            <!--<FormDescription>
+              This is your public display name.
+            </FormDescription>-->
+            <FormMessage />
+          </FormItem>
+        </FormField>
+        <div class="flex justify-center">
+          <Button type="submit"> Submit </Button>
+        </div>
+      </form>
+    </div>
+  </div>
 </template>
