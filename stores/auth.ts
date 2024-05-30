@@ -52,6 +52,7 @@ export const useAuthStore = defineStore({
       const token = useCookie("token");
       this.authenticated = false;
       token.value = null;
+      useRouter().push("/login");
     },
   },
 });
