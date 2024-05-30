@@ -3,6 +3,9 @@
     <Button @click="toggleSidebar()" class="bg-transparent hover:bg-gray-400">
       <Icon :name="eyeIcon" size="20" :color="iconColor"></Icon>
     </Button>
+    <Button @click="logout()" class="bg-transparent hover:bg-gray-400">
+      <Icon name="majesticons:logout" size="20" :color="iconColor"></Icon>
+    </Button>
     <Button @click="toggleChat()" class="bg-transparent hover:bg-gray-400">
       <Icon name="bi:chat-fill" size="20" :color="iconColor"></Icon>
     </Button>
@@ -11,8 +14,12 @@
 </template>
 
 <script lang="ts" setup>
+import { useAuthStore } from "@/stores/auth";
+
 defineProps(["eyeIcon"]);
 const emit = defineEmits(["toggleSidebar", "toggleChat"]);
+
+const { logUserOut } = useAuthStore();
 
 const colorMode = useColorMode();
 
@@ -27,6 +34,10 @@ function toggleSidebar() {
 
 function toggleChat() {
   emit("toggleChat");
+}
+
+function logout() {
+  logUserOut();
 }
 </script>
 
