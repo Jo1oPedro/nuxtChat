@@ -5,7 +5,7 @@
     >
       <p>
         Bem vindo de volta
-        {{ firstLetterUpperCase(user.username) }}!
+        {{ firstLetterUpperCase(user?.username) }}!
       </p>
       <NuxtLink to="/events">
         <Button class="">
@@ -34,14 +34,16 @@ import { useAuthStore } from "@/stores/auth";
 
 const store = useCounterStore();
 
-const { user } = useAuthStore();
+//const { user } = useAuthStore();
+
+useAuthStore().getUser();
 
 function firstLetterUpperCase(string: String) {
   //console.log(string);
-  return string.charAt(0).toUpperCase() + string.slice(1);
+  return string?.charAt(0).toUpperCase() + string?.slice(1);
 }
 
-console.log(user);
+console.log(useAuthStore().user);
 </script>
 
 <style></style>
