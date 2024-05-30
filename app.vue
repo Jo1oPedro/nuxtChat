@@ -1,10 +1,13 @@
 <template>
   <NuxtLayout>
     <NuxtPage></NuxtPage>
+    <Toaster />
   </NuxtLayout>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import Toaster from "@/components/ui/toast/Toaster.vue";
+</script>
 
 <style>
 .page-enter-active,
