@@ -9,6 +9,7 @@ export const useAuthStore = defineStore({
   id: "myAuthStore",
   state: () => ({
     id: Math.floor(Math.random() * 1001),
+    user: {},
     authenticated: false,
     loading: false,
     error: "",
@@ -40,6 +41,7 @@ export const useAuthStore = defineStore({
         this.loading = pending;
 
         if (data.value) {
+          this.user = data.value;
           const token = useCookie("token");
           token.value = data?.value?.token;
           this.authenticated = true;
