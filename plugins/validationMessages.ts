@@ -1,4 +1,4 @@
-const generateMessages = (fieldName) => ({
+const generateMessages = (fieldName: string) => ({
   min: (value: string | number) =>
     `${fieldName} precisa ter pelo menos ${value} caracteres`,
   max: (value: string | number) =>
