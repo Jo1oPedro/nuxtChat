@@ -20,6 +20,8 @@ export const useAuthStore = defineStore({
     },
     async authenticateUser({ username, password }: UserPayloadInterface) {
       try {
+        this.loading = true;
+
         const { data, pending, error }: any = await useFetch(
           "https://dummyjson.com/auth/login",
           {
@@ -28,6 +30,7 @@ export const useAuthStore = defineStore({
             body: {
               username,
               password,
+              expiresInMins: 60,
             },
           }
         );
@@ -38,13 +41,20 @@ export const useAuthStore = defineStore({
           return;
         }
 
-        this.loading = pending;
+        //this.loading = pending;
 
         if (data.value) {
+          const expiresInMins = 60 * 60 * 1000;
+          setTimeout(() => this.logUserOut(), expiresInMins);
+          const token = useCookie("token", {
+            expires: new Date(new Date().getTime() + expiresInMins), // 30 minutes
+            secure: true,
+            sameSite: "strict",
+          });
           this.user = data.value;
-          const token = useCookie("token");
           token.value = data?.value?.token;
           this.authenticated = true;
+          this.loading = false;
         }
       } catch (error) {
         console.log(error);
@@ -52,9 +62,26 @@ export const useAuthStore = defineStore({
     },
     logUserOut() {
       const token = useCookie("token");
-      this.authenticated = false;
       token.value = null;
+      this.authenticated = false;
+      this.user = {};
       useRouter().push("/login");
+    },
+    async getUser() {
+      if (!this.user?.hasOwnProperty("email")) {
+        const token = useCookie("token");
+        const { data, pending, error }: any = await useFetch(
+          "https://dummyjson.com/auth/me",
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token.value}`,
+            },
+          }
+        );
+
+        this.user = data.value;
+      }
     },
   },
 });
