@@ -7,11 +7,11 @@ export default defineNuxtPlugin((nuxtApp) => {
 
   const authStore = useAuthStore();
   const { authenticated } = storeToRefs(useAuthStore());
-
+  let socket: WebSocket | null;
   const setupWebSocket = (userId: string) => {
     const authStore = useAuthStore();
     const id = useAuthStore().getId();
-    const socket = new WebSocket(`ws://localhost:8080?userId=${id}`);
+    socket = new WebSocket(`ws://localhost:8080?userId=${id}`);
 
     socket.onopen = () => {
       console.log("conectado ao servidor");
@@ -46,8 +46,18 @@ export default defineNuxtPlugin((nuxtApp) => {
       }
     };
 
-    nuxtApp.provide("socket", socket);
-    nuxtApp.provide("sendMessageToServer", sendMessageToServer);
+    if (!nuxtApp.$socket) {
+      nuxtApp.provide("socket", socket);
+      nuxtApp.provide("sendMessageToServer", sendMessageToServer);
+    }
+  };
+
+  const closeWebSocket = () => {
+    if (socket) {
+      socket.close();
+      socket = null;
+      console.log("WebSocket connection closed due to logout");
+    }
   };
 
   watch(
@@ -56,6 +66,8 @@ export default defineNuxtPlugin((nuxtApp) => {
       if (isLoggedIn) {
         const userId = authStore.user.id;
         setupWebSocket(userId);
+      } else {
+        closeWebSocket();
       }
     },
     { immediate: true }
