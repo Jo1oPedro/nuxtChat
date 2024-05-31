@@ -1,12 +1,12 @@
 <template>
   <NuxtLayout>
     <NuxtPage></NuxtPage>
-    <Toaster />
+    <!--<Toaster />-->
   </NuxtLayout>
 </template>
 
 <script setup lang="ts">
-import Toaster from "@/components/ui/toast/Toaster.vue";
+//import Toaster from "@/components/ui/toast/Toaster.vue";
 import { useAuthStore } from "@/stores/auth";
 
 await useAuthStore().getUser();
