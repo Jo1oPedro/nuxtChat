@@ -34,16 +34,11 @@ import { useAuthStore } from "@/stores/auth";
 
 const store = useCounterStore();
 
-//const { user } = useAuthStore();
-
-useAuthStore().getUser();
+const { user } = useAuthStore();
 
 function firstLetterUpperCase(string: String) {
-  //console.log(string);
   return string?.charAt(0).toUpperCase() + string?.slice(1);
 }
-
-console.log(useAuthStore().user);
 </script>
 
 <style></style>
