@@ -20,10 +20,15 @@
 
       <LayoutChat :chatOpen="chatOpen" @toggle-chat="toggleChat()"></LayoutChat>
     </div>
+    <div class="absolute top-0 left-0 right-0">
+      <Toaster />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import Toaster from "@/components/ui/toast/Toaster.vue";
+
 const sidebarOpen = ref(true);
 const eyeIcon = ref("mdi:hide");
 function toggleSidebar() {
