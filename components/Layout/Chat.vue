@@ -21,7 +21,7 @@
       </div>
       <div class="overflow-y-scroll h-full flex">
         <div class="w-full grow flex flex-col justify-end">
-          <div v-for="message in userMessages" :key="message.content">
+          <div v-for="message in messages" :key="message.content">
             <LayoutChatMessageItem
               class="break-words mb-2"
               :content="message.content"
@@ -44,10 +44,11 @@
 
 <script lang="ts" setup>
 import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
 import { useChatStore } from "@/stores/chat";
+import { toast, ToastAction } from "@/components/ui/toast";
+import { storeToRefs } from "pinia";
 
-defineProps({
+const props = defineProps({
   chatOpen: {
     type: Boolean,
     required: true,
@@ -59,9 +60,28 @@ function toggleChat() {
   emit("toggleChat");
 }
 
-const chatStore = useChatStore();
+const { messages } = storeToRefs(useChatStore());
 
-const userMessages = computed(() => chatStore.messages);
+watch(messages.value, function () {
+  if (!props.chatOpen) {
+    toast({
+      title: "Nova mensagem",
+      description: messages.value[messages.value.length - 1].content,
+      //duration: null,
+      action: h(
+        ToastAction,
+        {
+          altText: "Visualizar mensagem",
+          onClick: toggleChat,
+        },
+        {
+          default: () => "Visualizar mensagem",
+        }
+      ),
+    });
+  }
+});
+
 function getMessageClass(messageOwner: boolean) {
   if (messageOwner) {
     return "bg-red-500";
