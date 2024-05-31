@@ -7,6 +7,9 @@
 
 <script setup lang="ts">
 import Toaster from "@/components/ui/toast/Toaster.vue";
+import { useAuthStore } from "@/stores/auth";
+
+await useAuthStore().getUser();
 </script>
 
 <style>
