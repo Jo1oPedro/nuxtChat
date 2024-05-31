@@ -5,6 +5,8 @@ interface UserPayloadInterface {
   password: String;
 }
 
+let logoutTimer: NodeJS.Timeout;
+
 export const useAuthStore = defineStore({
   id: "myAuthStore",
   state: () => ({
@@ -45,7 +47,7 @@ export const useAuthStore = defineStore({
 
         if (data.value) {
           const expiresInMins = 60 * 60 * 1000;
-          setTimeout(() => this.logUserOut(), expiresInMins);
+          logoutTimer = setTimeout(() => this.logUserOut(), expiresInMins);
           const token = useCookie("token", {
             expires: new Date(new Date().getTime() + expiresInMins), // 30 minutes
             secure: true,
@@ -65,6 +67,7 @@ export const useAuthStore = defineStore({
       token.value = null;
       this.authenticated = false;
       this.user = {};
+      clearTimeout(logoutTimer);
       useRouter().push("/login");
     },
     async getUser() {
