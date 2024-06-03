@@ -35,10 +35,4 @@ export default defineNuxtConfig({
       },
     },
   },
-  image: {
-    // Configuração básica do IPX
-    ipx: {
-      baseURL: "/_ipx",
-    },
-  },
 });
