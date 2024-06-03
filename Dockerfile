@@ -1,14 +1,30 @@
-FROM node:21.7.3
+ARG NODE_VERSION=21.7.3
+
+FROM node:${NODE_VERSION}-slim as base
+
+ARG PORT=3000
+
+ENV NODE_ENV=production
 
 WORKDIR /app
 
-COPY app/package*.json ./
+FROM base as build
 
-RUN npm install
+COPY --link ./app/package.json ./app/package-lock.json ./
 
-COPY ./app .
+RUN npm install --production=false
 
-EXPOSE 3000
+COPY --link ./app .
 
 RUN npm run build
+
+FROM base
+
+ENV PORT=$PORT
+
+#EXPOSE $PORT
+
+COPY --from=build /app /app
+
+RUN npm prune
 CMD [ "npm", "run", "dev" ]

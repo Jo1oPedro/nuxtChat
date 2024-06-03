@@ -1,10 +1,11 @@
 services:
   my-nuxt-app:
-    build: .
+    build:
+      context: .
     container_name: my-nuxt-app
     restart: unless-stopped
     ports:
       - "3000:3000"
-      #- "24678:24678"
-    volumes:
-      - ./app:/app
+    #- "24678:24678"
+    #volumes:
+    #  - ./app:/app
