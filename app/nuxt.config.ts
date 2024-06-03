@@ -26,4 +26,19 @@ export default defineNuxtConfig({
   colorMode: {
     classSuffix: "",
   },
+  vite: {
+    server: {
+      host: true,
+      port: 3000,
+      watch: {
+        usePolling: true,
+      },
+    },
+  },
+  image: {
+    // Configuração básica do IPX
+    ipx: {
+      baseURL: "/_ipx",
+    },
+  },
 });
