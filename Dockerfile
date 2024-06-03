@@ -1,8 +1,8 @@
-FROM node:lts-alpine3.20
+FROM node:21.7.3
 
 WORKDIR /app
 
-COPY ./app/package*.json ./
+COPY app/package*.json ./
 
 RUN npm install
 
