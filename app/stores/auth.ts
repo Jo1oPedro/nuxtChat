@@ -1,7 +1,14 @@
 import { defineStore } from "pinia";
 
-interface UserPayloadInterface {
+interface UserRegisterPayloadInterface {
+  email: String;
   username: String;
+  password: String;
+  passwordConfirmation: String;
+}
+
+interface UserLoginPayloadInterface {
+  email: String;
   password: String;
 }
 
@@ -10,32 +17,43 @@ let logoutTimer: NodeJS.Timeout;
 export const useAuthStore = defineStore({
   id: "myAuthStore",
   state: () => ({
-    id: Math.floor(Math.random() * 1001),
     user: {},
     authenticated: false,
     loading: false,
     error: "",
   }),
   actions: {
-    getId() {
-      return this.id;
+    getAuthenticatedUser() {
+      return this.user;
     },
-    async authenticateUser({ username, password }: UserPayloadInterface) {
+    async registerUser({
+      email,
+      username,
+      password,
+      passwordConfirmation,
+    }: UserRegisterPayloadInterface) {
+      await this.authenticateUser("http://localhost:7070/api/register", {
+        email,
+        name: username,
+        password,
+        password_confirmation: passwordConfirmation,
+      });
+    },
+    async loginUser({ email, password }: UserLoginPayloadInterface) {
+      await this.authenticateUser("http://localhost:7070/api/login", {
+        email,
+        password,
+      });
+    },
+    async authenticateUser(url: string, body: object) {
       try {
         this.loading = true;
 
-        const { data, pending, error }: any = await useFetch(
-          "https://dummyjson.com/auth/login",
-          {
-            method: "post",
-            headers: { "Content-type": "application/json" },
-            body: {
-              username,
-              password,
-              expiresInMins: 60,
-            },
-          }
-        );
+        const { data, error }: any = await useFetch(url, {
+          method: "POST",
+          headers: { "Content-type": "application/json" },
+          body,
+        });
 
         if (error.value) {
           this.error = error.value.data.message;
@@ -43,20 +61,30 @@ export const useAuthStore = defineStore({
           return;
         }
 
-        //this.loading = pending;
-
         if (data.value) {
-          const expiresInMins = 60 * 60 * 1000;
-          logoutTimer = setTimeout(() => this.logUserOut(), expiresInMins);
+          const expiresInMiliSeconds = data.value.expires_in * 60 * 1000;
+          logoutTimer = setTimeout(() => this.logUserOut, expiresInMiliSeconds);
           const token = useCookie("token", {
-            expires: new Date(new Date().getTime() + expiresInMins), // 30 minutes
+            expires: new Date(new Date().getTime() + expiresInMiliSeconds),
             secure: true,
             sameSite: "strict",
           });
-          this.user = data.value;
-          token.value = data?.value?.token;
+          token.value = data.value.token;
+
+          this.user = {
+            username: data.value.user.name,
+            email: data.value.user.email,
+            id: data.value.user.id,
+          };
+          const authenticatedUser = useCookie("authenticatedUser", {
+            expires: new Date(new Date().getTime() + expiresInMiliSeconds),
+            secure: true,
+            sameSite: "strict",
+          });
+          authenticatedUser.value = JSON.stringify(this.user);
           this.authenticated = true;
           this.loading = false;
+          return;
         }
       } catch (error) {
         console.log(error);
@@ -70,20 +98,10 @@ export const useAuthStore = defineStore({
       clearTimeout(logoutTimer);
       useRouter().push("/login");
     },
-    async getUser() {
+    setAuthenticatedUser() {
       if (!this.user?.hasOwnProperty("email")) {
-        const token = useCookie("token");
-        const { data, pending, error }: any = await useFetch(
-          "https://dummyjson.com/auth/me",
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token.value}`,
-            },
-          }
-        );
-
-        this.user = data.value;
+        const user = useCookie("authenticatedUser");
+        this.user = user.value;
       }
     },
   },
