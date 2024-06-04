@@ -3,12 +3,10 @@ definePageMeta({
   layout: "auth",
 });
 
-import { h } from "vue";
 import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import * as z from "zod";
 import { vAutoAnimate } from "@formkit/auto-animate/vue";
-
 import { Button } from "@/components/ui/button";
 import {
   FormControl,
@@ -19,42 +17,30 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/toast/use-toast";
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "@/stores/auth";
 
-const { authenticateUser } = useAuthStore();
-const { authenticated, error } = storeToRefs(useAuthStore());
-
 const { $generateMessages } = useNuxtApp();
-
-const { toast } = useToast();
-
 const formSchema = toTypedSchema(
   z.object({
-    //email: z.string().email({ message: $generateMessages("O email").required }),
-    nome: z
-      .string()
-      .min(2, { message: $generateMessages("O nome").min(2) })
-      .max(50, { message: $generateMessages("O nome").max(50) }),
-    senha: z.string().min(6, { message: $generateMessages("A senha").min(2) }),
+    email: z.string().email({ message: "O email inserido é inválido" }),
+    senha: z.string().min(6, { message: $generateMessages("A senha").min(6) }),
   })
 );
 
 const { handleSubmit, resetForm } = useForm({
   validationSchema: formSchema,
 });
-
 const router = useRouter();
-
+const { authenticated, error } = storeToRefs(useAuthStore());
+const { loginUser } = useAuthStore();
 const onSubmit = handleSubmit(async (values) => {
   const user = ref({
-    username: values.nome,
+    email: values.email,
     password: values.senha,
   });
 
-  await authenticateUser(user.value);
-
+  await loginUser(user.value);
   if (authenticated.value) {
     router.push("/");
   }
@@ -66,13 +52,13 @@ const onSubmit = handleSubmit(async (values) => {
     <div
       class="flex flex-col gap-4 md:w-[400px] bg-neutral-300 p-8 items-center justify-center"
     >
-      <span class="font-bold">Registrar-se</span>
+      <span class="font-bold">Logar</span>
       <form class="flex flex-col gap-4 w-full" @submit.prevent="onSubmit">
-        <FormField v-slot="{ componentField }" name="nome">
+        <FormField v-slot="{ componentField }" name="email">
           <FormItem v-auto-animate>
-            <FormLabel>Username</FormLabel>
+            <FormLabel>Email</FormLabel>
             <FormControl>
-              <Input type="text" v-bind="componentField" placeholder="emilys" />
+              <Input type="email" v-bind="componentField" />
             </FormControl>
             <!--<FormDescription>
               This is your public display name.
@@ -103,7 +89,13 @@ const onSubmit = handleSubmit(async (values) => {
           {{ error }}
         </div>
         <div class="flex justify-center">
-          <Button type="submit"> Submit </Button>
+          <Button type="submit"> Entrar </Button>
+        </div>
+        <div class="flex justify-center">
+          <p class="mr-2">Não tem uma conta?</p>
+          <NuxtLink to="/register" class="text-blue-500">
+            Registrar-se
+          </NuxtLink>
         </div>
       </form>
     </div>
