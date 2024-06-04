@@ -9,9 +9,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   const { authenticated } = storeToRefs(useAuthStore());
   let socket: WebSocket | null;
   const setupWebSocket = (userId: string) => {
-    const authStore = useAuthStore();
-    const id = useAuthStore().getId();
-    socket = new WebSocket(`ws://localhost:8080?userId=${id}`);
+    socket = new WebSocket(`ws://localhost:8080?userId=${userId}`);
 
     socket.onopen = () => {
       console.log("conectado ao servidor");
@@ -22,10 +20,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       console.log(event.data);
       if (data.type === "new_user" || data.type === "new_message") {
         const store = useChatStore();
-        store.setMessage(
-          data.message,
-          +data.user_id === useAuthStore().getId()
-        );
+        store.setMessage(data.message, +data.user_id === +userId);
       }
     };
 
@@ -64,7 +59,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     () => authenticated.value,
     (isLoggedIn) => {
       if (isLoggedIn) {
-        const userId = authStore.user.id;
+        const userId = authStore.getAuthenticatedUser().id;
         setupWebSocket(userId);
       } else {
         closeWebSocket();
