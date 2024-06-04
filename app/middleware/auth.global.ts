@@ -6,12 +6,13 @@ export default defineNuxtRouteMiddleware((to, from) => {
     authenticated.value = true;
   }
 
-  if (token.value && to?.name === "login") {
+  if (token.value && (to?.name === "login" || to?.name === "register")) {
     return navigateTo("/");
   }
-
-  if (!token.value && to?.name !== "login") {
+  console.log("valor da porra do token: " + token.value);
+  if (!token.value && to?.name !== "login" && to?.name !== "register") {
     abortNavigation();
     return navigateTo("/login");
   }
+  console.log("entrou pra porra da rota");
 });
