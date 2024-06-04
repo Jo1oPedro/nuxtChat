@@ -47,6 +47,7 @@ export const useAuthStore = defineStore({
     },
     async authenticateUser(url: string, body: object) {
       try {
+        this.error = "";
         this.loading = true;
 
         const { data, error }: any = await useFetch(url, {
