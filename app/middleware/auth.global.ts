@@ -9,10 +9,9 @@ export default defineNuxtRouteMiddleware((to, from) => {
   if (token.value && (to?.name === "login" || to?.name === "register")) {
     return navigateTo("/");
   }
-  console.log("valor da porra do token: " + token.value);
+
   if (!token.value && to?.name !== "login" && to?.name !== "register") {
     abortNavigation();
     return navigateTo("/login");
   }
-  console.log("entrou pra porra da rota");
 });
