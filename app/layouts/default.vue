@@ -18,7 +18,7 @@
         <slot />
       </div>
 
-      <LayoutChat :chatOpen="chatOpen" @toggle-chat="toggleChat()"></LayoutChat>
+      <Chat :chatOpen="chatOpen" @toggle-chat="toggleChat()"></Chat>
     </div>
     <div class="absolute top-0 left-0 right-0">
       <Toaster />

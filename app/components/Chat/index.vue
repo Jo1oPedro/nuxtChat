@@ -22,11 +22,11 @@
       <div class="overflow-y-scroll h-full flex">
         <div class="w-full grow flex flex-col justify-end">
           <div v-for="message in messages" :key="message.content">
-            <LayoutChatMessageItem
+            <ChatMessageItem
               class="break-words mb-2"
               :content="message.content"
               :messageOwner="message.messageOwner"
-            ></LayoutChatMessageItem>
+            ></ChatMessageItem>
           </div>
         </div>
       </div>
