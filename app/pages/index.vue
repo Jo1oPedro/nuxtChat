@@ -7,11 +7,7 @@
         Bem vindo de volta
         {{ firstLetterUpperCase(user?.username) }}!
       </p>
-      <NuxtLink to="/events">
-        <Button class="">
-          <span class="">Cadastrar Pet Desaparecido </span>
-        </Button>
-      </NuxtLink>
+      <PetsRegisterPet></PetsRegisterPet>
     </div>
     <div class="flex flex-col w-full p-3">
       <p class="mb-3">Pets desaparecidos</p>

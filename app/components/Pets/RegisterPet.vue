@@ -23,8 +23,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { usePetStore } from "~/stores/pet";
+import { storeToRefs } from "pinia";
 
-const open = ref(true);
+const open = ref(false);
 function toggleDialog() {
   if (
     open.value &&
@@ -39,9 +41,62 @@ function toggleDialog() {
   }
 }
 
-function onSubmit() {
-  alert("dALE");
-}
+const MAX_FILE_SIZE = 5000000;
+const ACCEPTED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+];
+const { $generateMessages } = useNuxtApp();
+const formSchema = toTypedSchema(
+  z.object({
+    name: z.string().min(1, { message: $generateMessages("O nome").min(1) }),
+    coordinate_x: z
+      .number()
+      .positive({ message: $generateMessages("A coordenada x").minNumber(1) }),
+    coordinate_y: z
+      .number()
+      .positive({ message: $generateMessages("A coordenada x").minNumber(1) }),
+    breed: z.string().min(6, { message: $generateMessages("A raça").min(6) }),
+    type: z.string().min(1, { message: $generateMessages("O tipo").min(1) }),
+    additional_info: z
+      .string()
+      .min(1, { message: $generateMessages("O tipo").min(1) }),
+  })
+);
+
+const { handleSubmit, resetForm } = useForm({
+  validationSchema: formSchema,
+});
+
+const fileInput = ref(null);
+const { error } = storeToRefs(usePetStore());
+const { registerPet } = usePetStore();
+const onSubmit = handleSubmit(async (values) => {
+  const formData = new FormData();
+  formData.append("name", values.name);
+  formData.append("coordinate_x", values.coordinate_x.toString());
+  formData.append("coordinate_y", values.coordinate_y.toString());
+  formData.append("breed", values.breed);
+  formData.append("type", values.type);
+  formData.append("additional_info", values.additional_info);
+
+  const files = fileInput.value.files;
+  if (files) {
+    for (let i = 0; i < files.length; i++) {
+      formData.append("pet_images[]", files[i]);
+    }
+  }
+
+  await registerPet(formData);
+
+  if (fileInput.value) {
+    fileInput.value.value = "";
+  }
+
+  resetForm();
+});
 </script>
 
 <template>
@@ -62,7 +117,11 @@ function onSubmit() {
       <DialogHeader>
         <DialogTitle></DialogTitle>
         <DialogDescription>
-          <form class="flex flex-col gap-4 w-full" @submit.prevent="onSubmit">
+          <form
+            class="flex flex-col gap-4 w-full"
+            @submit.prevent="onSubmit"
+            enctype="multipart/form-data"
+          >
             <FormField v-slot="{ componentField }" name="name">
               <FormItem v-auto-animate>
                 <FormLabel>Nome do pet</FormLabel>
@@ -76,7 +135,7 @@ function onSubmit() {
               <FormItem v-auto-animate>
                 <FormLabel>Coordenada x</FormLabel>
                 <FormControl>
-                  <Input type="number" v-bind="componentField" value="30" />
+                  <Input type="number" v-bind="componentField" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -85,7 +144,7 @@ function onSubmit() {
               <FormItem v-auto-animate>
                 <FormLabel>Coordenada y</FormLabel>
                 <FormControl>
-                  <Input type="number" v-bind="componentField" value="30" />
+                  <Input type="number" v-bind="componentField" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -103,7 +162,11 @@ function onSubmit() {
               <FormItem v-auto-animate>
                 <FormLabel>Tipo</FormLabel>
                 <FormControl>
-                  <Input type="text" v-bind="componentField" />
+                  <Input
+                    type="text"
+                    v-bind="componentField"
+                    placeholder="cachorro, gato, etc"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -117,6 +180,16 @@ function onSubmit() {
                 <FormMessage />
               </FormItem>
             </FormField>
+            <div>
+              <label for="pet_images">Fotos</label>
+              <input
+                type="file"
+                ref="fileInput"
+                id="pet_images"
+                accept="image/*"
+                multiple
+              />
+            </div>
             <div
               v-if="error"
               class="bg-red-500 rounded-full text-center text-base p-2 font-bold"
