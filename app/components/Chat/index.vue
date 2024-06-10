@@ -3,11 +3,11 @@
     <Icon
       name="bi:chat-text-fill"
       size="40"
-      class="absolute bottom-0 right-0 mb-5 mr-5"
+      class="fixed z-[52] bottom-0 right-0 mb-5 mr-5"
       @click="toggleChat"
     ></Icon>
     <div
-      class="absolute bottom-0 right-1 md:right-2 bg-neutral-100 w-[150px] h-[350px] md:w-[300px] md:h-[500px] flex flex-col"
+      class="fixed z-[52] bottom-0 right-1 md:right-2 bg-neutral-100 w-[150px] h-[350px] md:w-[300px] md:h-[500px] flex flex-col"
       v-if="chatOpen"
     >
       <div class="flex justify-between p-1 items-center border-b-2">
