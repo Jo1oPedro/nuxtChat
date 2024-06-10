@@ -11,16 +11,22 @@
       <LayoutHead
         :eyeIcon="eyeIcon"
         @toggle-sidebar="toggleSidebar()"
-        @toggle-chat="toggleChat()"
       ></LayoutHead>
 
-      <div class="grow flex">
-        <slot />
-      </div>
+      <!-- Spacer to account for the fixed header height -->
+      <div class="pt-6">
+        <div class="relative">
+          <div class="absolute top-0 right-0">cascata</div>
+        </div>
 
-      <Chat :chatOpen="chatOpen" @toggle-chat="toggleChat()"></Chat>
+        <div class="grow flex">
+          <slot />
+        </div>
+
+        <Chat></Chat>
+      </div>
     </div>
-    <div class="absolute top-0 left-0 right-0">
+    <div class="absolute top-0 right-0">
       <Toaster />
     </div>
   </div>
@@ -28,6 +34,8 @@
 
 <script setup lang="ts">
 import Toaster from "@/components/ui/toast/Toaster.vue";
+import { useChatStore } from "@/stores/chat";
+import { storeToRefs } from "pinia";
 
 const sidebarOpen = ref(true);
 const eyeIcon = ref("mdi:hide");
@@ -40,7 +48,8 @@ function toggleSidebar() {
   eyeIcon.value = "mdi:show";
 }
 
-const chatOpen = ref(false);
+const chatOpen = storeToRefs(useChatStore()).chatOpen;
+//const chatOpen = ref(false);
 function toggleChat() {
   chatOpen.value = !chatOpen.value;
 }

@@ -1,7 +1,7 @@
 <template>
   <div
     :class="backgroundColor"
-    class="m-0 p-0 fixed md:relative z-[51] md:z-0 w-full md:w-[220px] md:bg-transparent h-full flex flex-col gap-2 md:border-r-2"
+    class="m-0 p-0 fixed md:relative z-50 md:z-0 w-full md:w-[220px] md:bg-transparent h-full flex flex-col gap-2 md:border-r-2"
   >
     <header
       class="flex items-center gap-2 hover:scale-[101%] transition cursor-pointer"

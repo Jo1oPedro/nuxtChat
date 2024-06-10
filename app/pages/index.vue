@@ -17,7 +17,6 @@
           :key="petPost.id"
           class="bg-gray-200 grow flex items-center justify-center md:w-[150px]"
           :petPost="petPost"
-          @toggle-chat="toggleChat()"
         >
         </PetsPost>
       </div>
@@ -40,12 +39,6 @@ const petPosts = ref([]);
 onMounted(async () => {
   petPosts.value = await getPetPosts(3, 17);
 });
-
-const emit = defineEmits(["toggleChat"]);
-function toggleChat() {
-  console.log("dale");
-  emit("toggleChat");
-}
 </script>
 
 <style></style>

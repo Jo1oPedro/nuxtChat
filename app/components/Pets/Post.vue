@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-const emit = defineEmits(["toggleChat"]);
+import { useChatStore } from "@/stores/chat";
 
 const props = defineProps({
   petPost: {
@@ -21,7 +21,7 @@ const props = defineProps({
 });
 
 function toggleChat() {
-  emit("toggleChat", props.petPost.user_id);
+  useChatStore().toggleChat(props.petPost.user_id);
 }
 const url =
   "http://localhost:7070/" + props.petPost.pet_post_images[0].image_path;

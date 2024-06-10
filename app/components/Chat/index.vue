@@ -3,11 +3,11 @@
     <Icon
       name="bi:chat-text-fill"
       size="40"
-      class="fixed z-[52] bottom-0 right-0 mb-5 mr-5"
+      class="fixed z-[40] bottom-0 right-0 mb-5 mr-5"
       @click="toggleChat"
     ></Icon>
     <div
-      class="fixed z-[52] bottom-0 right-1 md:right-2 bg-neutral-100 w-[150px] h-[350px] md:w-[300px] md:h-[500px] flex flex-col"
+      class="fixed z-[40] bottom-0 right-1 md:right-2 bg-neutral-100 w-[150px] h-[350px] md:w-[300px] md:h-[500px] flex flex-col"
       v-if="chatOpen"
     >
       <div class="flex justify-between p-1 items-center border-b-2">
@@ -48,22 +48,15 @@ import { useChatStore } from "@/stores/chat";
 import { toast, ToastAction } from "@/components/ui/toast";
 import { storeToRefs } from "pinia";
 
-const props = defineProps({
-  chatOpen: {
-    type: Boolean,
-    required: true,
-  },
-});
-
-const emit = defineEmits(["toggleChat"]);
+const chatOpen = storeToRefs(useChatStore()).chatOpen;
 function toggleChat() {
-  emit("toggleChat");
+  useChatStore().toggleChat();
 }
 
 const { messages } = storeToRefs(useChatStore());
 
 watch(messages.value, function () {
-  if (!props.chatOpen) {
+  if (!chatOpen) {
     toast({
       title: "Nova mensagem",
       description: messages.value[messages.value.length - 1].content,

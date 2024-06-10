@@ -9,6 +9,8 @@ export const useChatStore = defineStore({
   id: "myChatStore",
   state: () => ({
     messages: [] as Message[],
+    chatOpen: false,
+    chats: [],
   }),
   actions: {
     setMessage(content: string, messageOwner: boolean) {
@@ -17,5 +19,9 @@ export const useChatStore = defineStore({
         messageOwner,
       });
     },
+    toggleChat() {
+      this.chatOpen = !this.chatOpen;
+    },
+    toggleUserChat(userId: string) {},
   },
 });
