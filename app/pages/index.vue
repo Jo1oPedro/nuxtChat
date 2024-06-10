@@ -12,28 +12,39 @@
     <div class="flex flex-col w-full p-3">
       <p class="mb-3">Pets desaparecidos</p>
       <div class="flex w-full flex-col sm:flex-row gap-3 justify-between">
-        <div
-          v-for="item in 3"
-          :key="item"
-          class="bg-gray-200 grow flex items-center justify-center"
+        <PetsPost
+          v-for="petPost in petPosts?.data?.data"
+          :key="petPost.id"
+          class="bg-gray-200 grow flex items-center justify-center md:w-[150px]"
+          :petPost="petPost"
+          @toggle-chat="toggleChat()"
         >
-          a
-        </div>
+        </PetsPost>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { useCounterStore } from "@/stores/myStore";
 import { useAuthStore } from "@/stores/auth";
-
-const store = useCounterStore();
+import { usePetStore } from "@/stores/pet";
 
 const { user } = useAuthStore();
-
 function firstLetterUpperCase(string: String) {
   return string?.charAt(0).toUpperCase() + string?.slice(1);
+}
+
+const { getPetPosts } = usePetStore();
+const petPosts = ref([]);
+
+onMounted(async () => {
+  petPosts.value = await getPetPosts(3, 17);
+});
+
+const emit = defineEmits(["toggleChat"]);
+function toggleChat() {
+  console.log("dale");
+  emit("toggleChat");
 }
 </script>
 
