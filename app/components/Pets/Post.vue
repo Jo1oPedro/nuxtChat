@@ -23,7 +23,6 @@ const props = defineProps({
 console.log(props.petPost);
 
 function toggleChat() {
-  //useChatStore().toggleChat(props.petPost.user);
   useChatStore().openUserChat(props.petPost.user);
 }
 const url =
