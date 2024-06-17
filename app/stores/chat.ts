@@ -8,26 +8,32 @@ interface Message {
 export const useChatStore = defineStore({
   id: "myChatStore",
   state: () => ({
-    messages: {}, //[] as Message[],
+    messages: {},
     chatOpen: false,
     specificChatOpen: false,
     specificChatInfo: {},
     chatsHistory: {},
-    lastUserIdRecieved: null,
+    lastUserMessageRecievedInfo: {},
   }),
   actions: {
-    setMessage(
-      content: string,
-      messageFrom: number,
-      messageOwner: boolean,
-      to: number
-    ) {
-      this.lastUserIdRecieved = messageFrom;
+    setMessage(messageInfo, messageOwner) {
+      this.lastUserMessageRecievedInfo = {
+        id: messageInfo.user_id,
+        name: messageInfo.user_from_name,
+      };
       if (!messageOwner) {
-        this.setSpecificMessage(messageFrom, content, messageOwner);
+        this.setSpecificMessage(
+          messageInfo.user_id,
+          messageInfo.message,
+          messageOwner
+        );
         return;
       }
-      this.setSpecificMessage(to, content, messageOwner);
+      this.setSpecificMessage(
+        messageInfo.to,
+        messageInfo.message,
+        messageOwner
+      );
     },
     setSpecificMessage(userId, content, messageOwner) {
       if (!this.messages[userId]) {
