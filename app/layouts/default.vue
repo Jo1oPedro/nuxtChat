@@ -34,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import Toaster from "@/components/ui/toast/Toaster.vue";
+import { toast, ToastAction } from "@/components/ui/toast";
 import { useChatStore } from "@/stores/chat";
 import { storeToRefs } from "pinia";
 
@@ -49,10 +49,33 @@ function toggleSidebar() {
   eyeIcon.value = "mdi:show";
 }
 
-const { chatOpen, specificChatOpen } = storeToRefs(useChatStore());
+const { chatOpen, specificChatOpen, messages } = storeToRefs(useChatStore());
 function toggleChat() {
   chatOpen.value = !chatOpen.value;
 }
+
+watch(messages.value, function () {
+  if (!specificChatOpen.value) {
+    toast({
+      title: "Nova mensagem",
+      description: "cascata",
+      //duration: null,
+      action: h(
+        ToastAction,
+        {
+          altText: "Visualizar mensagem",
+          onClick: useChatStore().openUserChat({
+            id: useChatStore().lastUserIdRecieved,
+            name: "dale",
+          }),
+        },
+        {
+          default: () => "Visualizar mensagem",
+        }
+      ),
+    });
+  }
+});
 </script>
 
 <style>
