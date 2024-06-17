@@ -26,7 +26,7 @@ function toggleChat() {
   useChatStore().openUserChat(props.petPost.user);
 }
 const url =
-  "http://localhost:7070/" + props.petPost.pet_post_images[0].image_path;
+  "http://localhost:7070/" + props.petPost.pet_post_images[0]?.image_path;
 </script>
 
 <style></style>

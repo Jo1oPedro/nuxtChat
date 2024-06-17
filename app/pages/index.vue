@@ -11,11 +11,11 @@
     </div>
     <div class="flex flex-col w-full p-3">
       <p class="mb-3">Pets desaparecidos</p>
-      <div class="flex w-full flex-col sm:flex-row gap-3 justify-between">
+      <div class="grid w-full grid-cols-1 sm:grid-cols-3 gap-3">
         <PetsPost
           v-for="petPost in petPosts?.data?.data"
           :key="petPost.id"
-          class="bg-gray-200 grow flex items-center justify-center md:w-[150px]"
+          class="bg-gray-200 grow flex items-center justify-center w-full"
           :petPost="petPost"
         >
         </PetsPost>
@@ -37,7 +37,7 @@ const { getPetPosts } = usePetStore();
 const petPosts = ref([]);
 
 onMounted(async () => {
-  petPosts.value = await getPetPosts(3, 17);
+  petPosts.value = await getPetPosts(6);
 });
 </script>
 
