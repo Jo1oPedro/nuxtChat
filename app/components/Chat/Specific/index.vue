@@ -43,8 +43,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { useChatStore } from "@/stores/chat";
 import { storeToRefs } from "pinia";
 
-//const chatOpen = storeToRefs(useChatStore()).chatOpen;
-//const specificChatInfo = storeToRefs(useChatStore()).specificChatInfo;
 function toggleChat() {
   useChatStore().closeUserChat();
 }
