@@ -7,7 +7,7 @@
         Bem vindo de volta
         {{ firstLetterUpperCase(user?.username) }}!
       </p>
-      <PetsRegisterPet></PetsRegisterPet>
+      <PetsRegisterPet @petRegistered="refreshPetPosts"></PetsRegisterPet>
     </div>
     <div class="flex flex-col w-full p-3">
       <p class="mb-3">Pets desaparecidos</p>
@@ -36,8 +36,12 @@ function firstLetterUpperCase(string: String) {
 const { getPetPosts } = usePetStore();
 const petPosts = ref([]);
 
-onMounted(async () => {
+async function refreshPetPosts() {
   petPosts.value = await getPetPosts(6);
+}
+
+onMounted(async () => {
+  refreshPetPosts();
 });
 </script>
 

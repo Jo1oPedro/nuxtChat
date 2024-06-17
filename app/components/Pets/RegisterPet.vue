@@ -26,6 +26,8 @@ import { Input } from "@/components/ui/input";
 import { usePetStore } from "~/stores/pet";
 import { storeToRefs } from "pinia";
 
+const emit = defineEmits(["petRegistered"]);
+
 const open = ref(false);
 function toggleDialog() {
   if (
@@ -120,6 +122,7 @@ const onSubmit = handleSubmit(async (values) => {
   }
 
   resetForm();
+  emit("petRegistered");
 });
 </script>
 
