@@ -20,8 +20,11 @@ const props = defineProps({
   },
 });
 
+console.log(props.petPost);
+
 function toggleChat() {
-  useChatStore().toggleChat(props.petPost.user_id);
+  //useChatStore().toggleChat(props.petPost.user);
+  useChatStore().openUserChat(props.petPost.user);
 }
 const url =
   "http://localhost:7070/" + props.petPost.pet_post_images[0].image_path;
