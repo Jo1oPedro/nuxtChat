@@ -105,7 +105,6 @@ const onSubmit = handleSubmit(async (values) => {
   const files = fileInput.value.files;
 
   if (!files || files.length === 0) {
-    // Exibir uma mensagem de erro se nenhum arquivo foi selecionado
     alert("Pelo menos uma imagem é necessária");
     return;
   }
