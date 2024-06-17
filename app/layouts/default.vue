@@ -24,6 +24,7 @@
         </div>
 
         <Chat></Chat>
+        <ChatSpecific v-if="specificChatOpen"></ChatSpecific>
       </div>
     </div>
     <div class="absolute top-0 right-0">
@@ -48,8 +49,7 @@ function toggleSidebar() {
   eyeIcon.value = "mdi:show";
 }
 
-const chatOpen = storeToRefs(useChatStore()).chatOpen;
-//const chatOpen = ref(false);
+const { chatOpen, specificChatOpen } = storeToRefs(useChatStore());
 function toggleChat() {
   chatOpen.value = !chatOpen.value;
 }
