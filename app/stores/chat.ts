@@ -8,15 +8,15 @@ interface Message {
 export const useChatStore = defineStore({
   id: "myChatStore",
   state: () => ({
-    messages: [] as Message[],
+    messages: {}, //[] as Message[],
     chatOpen: false,
     specificChatOpen: false,
     specificChatInfo: {},
     chatsHistory: {},
   }),
   actions: {
-    setMessage(content: string, messageOwner: boolean) {
-      this.messages.push({
+    setMessage(content: string, messageOwner: boolean, to: number) {
+      this.messages[to].push({
         content,
         messageOwner,
       });
@@ -30,6 +30,9 @@ export const useChatStore = defineStore({
         user_id: userInfo.id,
         user_name: userInfo.name,
       };
+      if (!this.messages[userInfo.id]) {
+        this.messages[userInfo.id] = [];
+      }
     },
     closeUserChat() {
       this.specificChatOpen = false;

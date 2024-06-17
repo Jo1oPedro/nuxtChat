@@ -17,7 +17,7 @@
       </div>
       <div class="overflow-y-scroll h-full flex">
         <div class="w-full grow flex flex-col justify-end">
-          <div v-for="message in messages" :key="message.content">
+          <div v-for="message in chatMessages ?? []" :key="message.content">
             <ChatMessageItem
               class="break-words mb-2"
               :content="message.content"
@@ -48,7 +48,8 @@ function toggleChat() {
 }
 
 const { messages, specificChatInfo } = storeToRefs(useChatStore());
-console.log(specificChatInfo);
+const chatMessages = messages.value[specificChatInfo.value.user_id];
+
 const userMessage = ref("");
 const { $sendMessageToServer } = useNuxtApp();
 function sendMessage() {

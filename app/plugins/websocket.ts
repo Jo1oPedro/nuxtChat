@@ -20,7 +20,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       console.log(event.data);
       if (data.type === "new_user" || data.type === "new_message") {
         const store = useChatStore();
-        store.setMessage(data.message, +data.user_id === +userId);
+        store.setMessage(data.message, +data.user_id === +userId, data.to);
       }
     };
 
