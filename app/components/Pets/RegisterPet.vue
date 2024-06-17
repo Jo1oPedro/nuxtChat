@@ -51,18 +51,38 @@ const ACCEPTED_IMAGE_TYPES = [
 const { $generateMessages } = useNuxtApp();
 const formSchema = toTypedSchema(
   z.object({
-    name: z.string().min(1, { message: $generateMessages("O nome").min(1) }),
+    name: z
+      .string({ required_error: $generateMessages("O nome").required })
+      .min(1, { message: $generateMessages("O nome").min(1) }),
     coordinate_x: z
-      .number()
+      .number({ required_error: $generateMessages("A coordenada x").required })
       .positive({ message: $generateMessages("A coordenada x").minNumber(1) }),
     coordinate_y: z
-      .number()
+      .number({ required_error: $generateMessages("A coordenada y").required })
       .positive({ message: $generateMessages("A coordenada x").minNumber(1) }),
-    breed: z.string().min(6, { message: $generateMessages("A raça").min(6) }),
-    type: z.string().min(1, { message: $generateMessages("O tipo").min(1) }),
-    additional_info: z
-      .string()
+    breed: z
+      .string({ required_error: $generateMessages("A raça").required })
+      .min(6, { message: $generateMessages("A raça").min(6) }),
+    type: z
+      .string({ required_error: $generateMessages("O tipo").required })
       .min(1, { message: $generateMessages("O tipo").min(1) }),
+    additional_info: z
+      .string({
+        required_error: $generateMessages("A informação adicional").required,
+      })
+      .min(1, { message: $generateMessages("O tipo").min(1) }),
+    images: z
+      .array(
+        z
+          .instanceof(File)
+          .refine((file) => file.size <= MAX_FILE_SIZE, {
+            message: "O tamanho da imagem não pode exceder 5MB",
+          })
+          .refine((file) => ACCEPTED_IMAGE_TYPES.includes(file.type), {
+            message: "Tipo de imagem não suportado",
+          })
+      )
+      .min(1, { message: "Pelo menos uma imagem é necessária" }),
   })
 );
 
@@ -83,10 +103,15 @@ const onSubmit = handleSubmit(async (values) => {
   formData.append("additional_info", values.additional_info);
 
   const files = fileInput.value.files;
-  if (files) {
-    for (let i = 0; i < files.length; i++) {
-      formData.append("pet_images[]", files[i]);
-    }
+
+  if (!files || files.length === 0) {
+    // Exibir uma mensagem de erro se nenhum arquivo foi selecionado
+    alert("Pelo menos uma imagem é necessária");
+    return;
+  }
+
+  for (let i = 0; i < files.length; i++) {
+    formData.append("pet_images[]", files[i]);
   }
 
   await registerPet(formData);
@@ -180,16 +205,22 @@ const onSubmit = handleSubmit(async (values) => {
                 <FormMessage />
               </FormItem>
             </FormField>
-            <div>
-              <label for="pet_images">Fotos</label>
-              <input
-                type="file"
-                ref="fileInput"
-                id="pet_images"
-                accept="image/*"
-                multiple
-              />
-            </div>
+            <FormField v-slot="{ componentField }" name="images">
+              <FormItem v-auto-animate>
+                <FormLabel>Fotos</FormLabel><br />
+                <FormControl>
+                  <input
+                    type="file"
+                    ref="fileInput"
+                    id="pet_images"
+                    accept="image/*"
+                    multiple
+                    @change="componentField.onChange"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            </FormField>
             <div
               v-if="error"
               class="bg-red-500 rounded-full text-center text-base p-2 font-bold"
