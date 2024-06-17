@@ -57,6 +57,7 @@ function sendMessage() {
     const message = {
       type: "new_message",
       message: userMessage.value,
+      user_to_name: specificChatInfo.value.user_name,
       to: specificChatInfo.value.user_id,
     };
     userMessage.value = "";
