@@ -13,10 +13,27 @@ export const useChatStore = defineStore({
     specificChatOpen: false,
     specificChatInfo: {},
     chatsHistory: {},
+    lastUserIdRecieved: null,
   }),
   actions: {
-    setMessage(content: string, messageOwner: boolean, to: number) {
-      this.messages[to].push({
+    setMessage(
+      content: string,
+      messageFrom: number,
+      messageOwner: boolean,
+      to: number
+    ) {
+      this.lastUserIdRecieved = messageFrom;
+      if (!messageOwner) {
+        this.setSpecificMessage(messageFrom, content, messageOwner);
+        return;
+      }
+      this.setSpecificMessage(to, content, messageOwner);
+    },
+    setSpecificMessage(userId, content, messageOwner) {
+      if (!this.messages[userId]) {
+        this.messages[userId] = [];
+      }
+      this.messages[userId].push({
         content,
         messageOwner,
       });
