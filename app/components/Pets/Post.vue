@@ -5,7 +5,11 @@
       <div class="w-full p-2 flex items-center justify-center">
         <img :src="url" class="md:w-[50%] h-[100px] md:h-[200px]" />
       </div>
-      <Button @click="toggleChat()">Contatar o dono</Button>
+      <Button
+        @click="toggleChat()"
+        v-if="petPost.user_id != authenticatedUserId"
+        >Contatar o dono</Button
+      >
     </div>
   </div>
 </template>
@@ -20,6 +24,7 @@ const props = defineProps({
   },
 });
 
+const authenticatedUserId = useCookie("authenticatedUser").value.id;
 console.log(props.petPost);
 
 function toggleChat() {
