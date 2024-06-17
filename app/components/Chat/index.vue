@@ -11,7 +11,7 @@
       v-if="chatOpen"
     >
       <div class="flex justify-between p-1 items-center border-b-2">
-        <UsersChatProfile name="Vitoria" image="img/vitoria.jpg" />
+        <UsersChatProfile name="Vitoria" image="~/public/img/logo.png" />
         <Icon
           name="material-symbols:close"
           size="20"
