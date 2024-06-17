@@ -6,7 +6,7 @@
       <div class="flex justify-between p-1 items-center border-b-2">
         <UsersChatProfile
           :name="specificChatInfo.user_name"
-          image="~/public/img/vitoria.jpg"
+          image="img/vitoria.jpg"
         />
         <Icon
           name="material-symbols:close"
@@ -47,8 +47,8 @@ function toggleChat() {
   useChatStore().closeUserChat();
 }
 
-const { messages, chatOpen, specificChatInfo } = storeToRefs(useChatStore());
-
+const { messages, specificChatInfo } = storeToRefs(useChatStore());
+console.log(specificChatInfo);
 const userMessage = ref("");
 const { $sendMessageToServer } = useNuxtApp();
 function sendMessage() {
@@ -56,7 +56,7 @@ function sendMessage() {
     const message = {
       type: "new_message",
       message: userMessage.value,
-      to: specificChatInfo.user_id,
+      to: specificChatInfo.value.user_id,
     };
     userMessage.value = "";
     $sendMessageToServer(message);
