@@ -1,9 +1,11 @@
 <template>
   <div class="flex gap-2 items-center">
-    <NuxtImg
+    <img
       :src="image"
+      alt="foto do usuário"
       class="h-[30px] w-[30px] md:h-[40px] md:w-[40px] rounded-full"
-    ></NuxtImg>
+    />
+
     <p class="text-lg">{{ name }}</p>
   </div>
 </template>
