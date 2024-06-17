@@ -10,7 +10,9 @@ export const useChatStore = defineStore({
   state: () => ({
     messages: [] as Message[],
     chatOpen: false,
-    chats: [],
+    specificChatOpen: false,
+    specificChatInfo: {},
+    chatsHistory: {},
   }),
   actions: {
     setMessage(content: string, messageOwner: boolean) {
@@ -22,6 +24,15 @@ export const useChatStore = defineStore({
     toggleChat() {
       this.chatOpen = !this.chatOpen;
     },
-    toggleUserChat(userId: string) {},
+    openUserChat(userInfo: object) {
+      this.specificChatOpen = true;
+      this.specificChatInfo = {
+        user_id: userInfo.id,
+        user_name: userInfo.name,
+      };
+    },
+    closeUserChat() {
+      this.specificChatOpen = false;
+    },
   },
 });
