@@ -57,17 +57,21 @@ function toggleChat() {
 watch(messages.value, function () {
   if (!specificChatOpen.value) {
     toast({
-      title: "Nova mensagem",
-      description: "cascata",
+      title: `Nova mensagem de ${
+        useChatStore().lastUserMessageRecievedInfo.name
+      }`,
+      //description: "cascata",
       //duration: null,
       action: h(
         ToastAction,
         {
           altText: "Visualizar mensagem",
-          onClick: useChatStore().openUserChat({
-            id: useChatStore().lastUserIdRecieved,
-            name: "dale",
-          }),
+          onClick: () => {
+            useChatStore().openUserChat({
+              id: useChatStore().lastUserMessageRecievedInfo.id,
+              name: useChatStore().lastUserMessageRecievedInfo.name,
+            });
+          },
         },
         {
           default: () => "Visualizar mensagem",
