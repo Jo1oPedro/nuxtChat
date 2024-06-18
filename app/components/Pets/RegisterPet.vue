@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { toast, ToastAction } from "@/components/ui/toast";
 import {
   Dialog,
   DialogContent,
@@ -117,9 +118,15 @@ const onSubmit = handleSubmit(async (values) => {
 
   await registerPet(formData);
 
+  if (error.value) {
+    return;
+  }
+
   if (fileInput.value) {
     fileInput.value.value = "";
   }
+
+  toast({ title: "Post cadastrado com sucesso" });
 
   resetForm();
   emit("petRegistered");
