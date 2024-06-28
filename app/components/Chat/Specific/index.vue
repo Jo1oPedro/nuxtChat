@@ -48,7 +48,10 @@ function toggleChat() {
 }
 
 const { messages, specificChatInfo } = storeToRefs(useChatStore());
-const chatMessages = messages.value[specificChatInfo.value.user_id];
+const chatMessages = ref(messages.value[specificChatInfo.value.user_id]);
+watch(specificChatInfo, () => {
+  chatMessages.value = messages.value[specificChatInfo.value.user_id];
+});
 
 const userMessage = ref("");
 const { $sendMessageToServer } = useNuxtApp();
@@ -63,13 +66,6 @@ function sendMessage() {
     userMessage.value = "";
     $sendMessageToServer(message);
   }
-}
-
-function getMessageClass(messageOwner: boolean) {
-  if (messageOwner) {
-    return "bg-red-500";
-  }
-  return "bg-blue-500";
 }
 </script>
 

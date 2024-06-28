@@ -9,7 +9,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   const { authenticated } = storeToRefs(useAuthStore());
   let socket: WebSocket | null;
   const setupWebSocket = (userId: string) => {
-    socket = new WebSocket(`ws://localhost:8080?userId=${userId}`);
+    socket = new WebSocket(`ws://85.31.62.148:8080?userId=${userId}`);
 
     socket.onopen = () => {
       console.log("conectado ao servidor");
